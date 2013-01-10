@@ -1,0 +1,5 @@
+name: dart_await_samples
+description: These are samples to test my new approach to await for Dart
+
+dependencies:
+  unittest: any
