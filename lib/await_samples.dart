@@ -127,11 +127,11 @@ Future<int> whileLoop(int value) {
         __prevBookmark.locations.contains("while1")) {
       
       __nextBookmark.locations.add("while1");
-      while ((__prevBookmark != null &&
-              __prevBookmark.locations.remove("while1")) ||
-             (__prevBookmark == null &&
-              value > 0)) {
-        
+      while ((__prevBookmark == null &&
+              value > 0) ||
+             (__prevBookmark != null &&
+              __prevBookmark.locations.remove("while1"))) {
+
         int returnedValue;
         if (__prevBookmark == null) {
           wrapWithFuture(value).then((__value) {
@@ -162,4 +162,61 @@ Future<int> whileLoop(int value) {
   }
 
   return _whileLoop(null, value);
+}
+
+/**
+ * Test recursion, if statements, and return statements in the middle.
+ * 
+ *   async int recursivelySum(int value) {
+ *     if (value <= 0) {
+ *       return value;
+ *     }
+ *     var sum <- recursivelySum(value - 1);
+ *     return sum + value;
+ *   }   
+ */
+Future<int> recursivelySum(int value) {
+
+  Future<int> _recursivelySum(Bookmark __prevBookmark, int value) {
+    Completer<int> __completer = new Completer<int>();
+    Bookmark __nextBookmark = new Bookmark();
+
+    if (__prevBookmark == null) {
+      __nextBookmark.variables["value"] = value;
+    }
+
+    if ((__prevBookmark == null && value <= 0) ||
+        (__prevBookmark != null &&
+         __prevBookmark.locations.contains("if1"))) {
+      __nextBookmark.locations.add("if1");
+      
+      __completer.complete(value);
+      return __completer.future;
+
+      __nextBookmark.locations.remove("if1");
+    }
+    
+    var sum;
+    if (__prevBookmark == null) {
+      recursivelySum(value - 1).then((__value) {
+        __nextBookmark.locations.add("await1");
+        __nextBookmark.variables["sum"] = __value;
+        Bookmark __copy = new Bookmark.from(__nextBookmark);
+        _recursivelySum(__copy, value).then((__value) {
+          __completer.complete(__value);
+        });
+      });
+      return __completer.future;
+    }
+    if (__prevBookmark.locations.contains("await1")) {
+      sum = __nextBookmark.variables["sum"] = __prevBookmark.variables["sum"];
+      value = __nextBookmark.variables["value"] = __prevBookmark.variables["value"];
+      __prevBookmark = null;
+    }
+    
+    __completer.complete(sum + value);
+    return __completer.future;
+  }
+
+  return _recursivelySum(null, value);
 }
