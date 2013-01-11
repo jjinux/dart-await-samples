@@ -17,5 +17,10 @@ void main() {
       var checkResult = expectAsync1((value) => expect(value, 2));
       simpleStatement(0).then(checkResult);
     });
+    
+    test("whileLoop", () {
+      var checkResult = expectAsync1((value) => expect(value, 3 + 2 + 1));
+      whileLoop(3).then(checkResult);
+    });
   });
 }
