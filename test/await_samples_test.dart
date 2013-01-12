@@ -61,5 +61,17 @@ void main() {
         throwInMultipleWays(2).handleException(handleException);
       });
     });
+    
+    group('nestedClosures', () {
+      test("when executeAwait is false, closureForI() == closureForI2()", () {
+        var checkResult = expectAsync1((value) => expect(value, [2, 2, {'a': 1}, {'a': 1}]));
+        nestedClosures(false).then(checkResult);
+      });
+      
+      test("when executeAwait is true, closureForI() != closureForI2()", () {
+        var checkResult = expectAsync1((value) => expect(value, [0, 2, {'a': 1}, {'a': 1}]));
+        nestedClosures(true).then(checkResult);
+      });
+    });
   });
 }

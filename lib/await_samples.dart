@@ -429,3 +429,149 @@ Future throwInMultipleWays(int value) {
   return _throwInMultipleWays(null, value);
 }
 
+/**
+ * Test closures created within async functions.
+ * 
+ *   async List nestedClosures(bool executeAwait) {
+ *     var i = 0;
+ *     var m = {};
+ *     var closureForI = () => i;
+ *     var closureForM = () => m;
+ *     if (executeAwait) {
+ *       <- wrapWithFuture(0);
+ *     } else {
+ *       (() => null)();
+ *     }
+ *     i = 2;
+ *     m["a"] = 1;
+ *     var closureForI2 = () => i;
+ *     var closureForM2 = () => m;
+ *     return [closureForI(), closureForI2(),
+ *             closureForM(), closureForM2()];
+ *   }
+ */
+Future<List> nestedClosures(bool executeAwait) {
+
+  Future<List> _nestedClosures(
+      Bookmark __prevBookmark, bool executeAwait) {
+    Bookmark __nextBookmark = new Bookmark<List>();    
+    if (__prevBookmark == null) {
+      __nextBookmark.completer = new Completer<List>();
+    } else {
+      __nextBookmark.completer = __prevBookmark.completer;
+    }    
+    Completer<List> __completer = __nextBookmark.completer;
+    if (__prevBookmark == null) {
+      __nextBookmark.variables["executeAwait"] = executeAwait;
+    }
+    try {
+
+      var i;
+      if (__prevBookmark == null) {
+        i = __nextBookmark.variables["i"] = 0;
+      }
+      
+      var m;
+      if (__prevBookmark == null) {
+        m = __nextBookmark.variables["m"] = {};
+      }
+
+      var closureForI;
+      if (__prevBookmark == null) {
+        closureForI = __nextBookmark.variables["closureForI"] = () => i;
+      }
+
+      var closureForM;
+      if (__prevBookmark == null) {
+        closureForM = __nextBookmark.variables["closureForM"] = () => m;
+      }
+      
+      if ((__prevBookmark == null && executeAwait) ||
+          (__prevBookmark != null &&
+          __prevBookmark.locations.contains("if1"))) {
+        __nextBookmark.locations.add("if1");
+
+        var __ignored1;
+        if (__prevBookmark == null) {
+          Future<int> __asyncCallFuture = wrapWithFuture(0);
+
+          __reEnterFunction() {
+            __nextBookmark.locations.add("await1");
+            Bookmark __copy = new Bookmark.from(__nextBookmark);
+            _nestedClosures(__copy, executeAwait);            
+          }
+          
+          __asyncCallFuture.then((__value) {
+            __nextBookmark.variables["__ignored1"] = __value;            
+            __reEnterFunction();
+          });
+          
+          __asyncCallFuture.handleException((__e) {
+            __nextBookmark.variables["__exceptionToThrow"] = __e;            
+            __reEnterFunction();
+            return true;
+          });
+          
+          return __completer.future;
+        }
+
+        if (__prevBookmark.locations.contains("await1")) {
+          executeAwait = __nextBookmark.variables["executeAwait"] = __prevBookmark.variables["executeAwait"];
+          i = __nextBookmark.variables["i"] = __prevBookmark.variables["i"];
+          m = __nextBookmark.variables["m"] = __prevBookmark.variables["m"];
+          closureForI = __nextBookmark.variables["closureForI"] = __prevBookmark.variables["closureForI"];
+          closureForM = __nextBookmark.variables["closureForM"] = __prevBookmark.variables["closureForM"];
+          __ignored1 = __nextBookmark.variables["__ignored1"] = __prevBookmark.variables["__ignored1"];
+          var __exceptionToThrow = __prevBookmark.variables["__exceptionToThrow"];
+          __prevBookmark = null;
+
+          if (__exceptionToThrow != null) throw __exceptionToThrow; 
+        }
+        
+        __nextBookmark.locations.remove("if1");
+      }
+      
+      // I haven't written the transform for else yet, so I'm just going
+      // to treat it as an if.
+      if ((__prevBookmark == null && !executeAwait) ||
+          (__prevBookmark != null &&
+          __prevBookmark.locations.contains("if2"))) {
+        __nextBookmark.locations.add("if2");
+        
+        if (__prevBookmark == null) {
+          (() => null)();
+        }
+       
+        __nextBookmark.locations.remove("if2");
+      }      
+      
+      if (__prevBookmark == null) {
+        i = __nextBookmark.variables["i"] = 2;
+      }
+      
+      if (__prevBookmark == null) {
+        m["a"] = 1;
+      }
+      
+      var closureForI2;
+      if (__prevBookmark == null) {
+        closureForI2 = __nextBookmark.variables["closureForI2"] = () => i;
+      }
+
+      var closureForM2;
+      if (__prevBookmark == null) {
+        closureForM2 = __nextBookmark.variables["closureForM2"] = () => m;
+      }
+
+      __completer.complete([closureForI(), closureForI2(),
+                            closureForM(), closureForM2()]);
+      return __completer.future;
+
+    } catch (__e, __s) {
+      __completer.completeException(__e, __s);
+      return __completer.future;
+    }
+  }
+
+  return _nestedClosures(null, executeAwait);
+}
