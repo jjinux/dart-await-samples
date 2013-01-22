@@ -9,11 +9,11 @@ void main() {
     });
 
     test("asyncThrow", () {
-      var handleException = expectAsync1((e) {
-        assert(e is SomeException);
-        expect(e.message, "Expected");
+      var catchError = expectAsync1((e) {        
+        assert(e.error is SomeException);
+        expect(e.error.message, "Expected");
       });
-      asyncThrow(new SomeException("Expected")).handleException(handleException);
+      asyncThrow(new SomeException("Expected")).catchError(catchError);
     });
 
     test("wrapWithFuture", () {
@@ -38,27 +38,27 @@ void main() {
 
     group('throwInMultipleWays', () {
       test("Handles exceptions before <-", () {
-        var handleException = expectAsync1((e) {
-          assert(e is SomeException);
-          expect(e.message, "Throw before <-");
+        var catchError = expectAsync1((e) {
+          assert(e.error is SomeException);
+          expect(e.error.message, "Throw before <-");
         });
-        throwInMultipleWays(0).handleException(handleException);
+        throwInMultipleWays(0).catchError(catchError);
       });
 
       test("Handles exceptions in function called with <-", () {
-        var handleException = expectAsync1((e) {
-          assert(e is SomeException);
-          expect(e.message, "Throw during <-");
+        var catchError = expectAsync1((e) {
+          assert(e.error is SomeException);
+          expect(e.error.message, "Throw during <-");
         });
-        throwInMultipleWays(1).handleException(handleException);
+        throwInMultipleWays(1).catchError(catchError);
       });
 
       test("Handles exceptions after <-", () {
-        var handleException = expectAsync1((e) {
-          assert(e is SomeException);
-          expect(e.message, "Throw after <-");
+        var catchError = expectAsync1((e) {
+          assert(e.error is SomeException);
+          expect(e.error.message, "Throw after <-");
         });
-        throwInMultipleWays(2).handleException(handleException);
+        throwInMultipleWays(2).catchError(catchError);
       });
     });
 

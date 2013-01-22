@@ -8,7 +8,7 @@
  */
 
 library await_samples;
-import "dart:isolate";
+import "dart:async";
 
 /// This is taken directly from the spec.
 class Bookmark<ReturnType> {
@@ -46,7 +46,7 @@ class SomeException implements Exception {
 Future asyncThrow(Exception e) {
   var completer = new Completer();
   new Timer(0, (t) {
-    completer.completeException(e);
+    completer.completeError(e);
   });
   return completer.future;
 }
@@ -77,7 +77,7 @@ Future<int> wrapWithFuture(int value) {
       return __completer.future;
 
     } catch (__e, __s) {
-      __completer.completeException(__e, __s);
+      __completer.completeError(__e, __s);
       return __completer.future;
     }
   }
@@ -115,21 +115,17 @@ Future<int> simpleStatement(int value) {
       }
 
       if (__prevBookmark == null) {
-        Future<int> __asyncCallFuture = asyncIncrement(value);
-
         __reEnterFunction() {
           __nextBookmark.locations.add("await1");
           Bookmark __copy = new Bookmark.from(__nextBookmark);
           _simpleStatement(__copy, value);
         }
 
-        __asyncCallFuture.then((__value) {
+        asyncIncrement(value).then((__value) {
           __nextBookmark.variables["value"] = __value;
           __reEnterFunction();
-        });
-
-        __asyncCallFuture.handleException((__e) {
-          __nextBookmark.variables["__exceptionToThrow"] = __e;
+        }).catchError((__e) {
+          __nextBookmark.variables["__exceptionToThrow"] = __e.error;
           __reEnterFunction();
           return true;
         });
@@ -148,7 +144,7 @@ Future<int> simpleStatement(int value) {
       return __completer.future;
 
     } catch (__e, __s) {
-      __completer.completeException(__e, __s);
+      __completer.completeError(__e, __s);
       return __completer.future;
     }
   }
@@ -201,21 +197,17 @@ Future<int> whileLoop(int value) {
 
           var returnedValue;
           if (__prevBookmark == null) {
-            Future<int> __asyncCallFuture = wrapWithFuture(value);
-
             __reEnterFunction() {
               __nextBookmark.locations.add("await1");
               Bookmark __copy = new Bookmark.from(__nextBookmark);
               _whileLoop(__copy, value);
             }
 
-            __asyncCallFuture.then((__value) {
+            wrapWithFuture(value).then((__value) {
               __nextBookmark.variables["returnedValue"] = __value;
               __reEnterFunction();
-            });
-
-            __asyncCallFuture.handleException((__e) {
-              __nextBookmark.variables["__exceptionToThrow"] = __e;
+            }).catchError((__e) {
+              __nextBookmark.variables["__exceptionToThrow"] = __e.error;
               __reEnterFunction();
               return true;
             });
@@ -248,7 +240,7 @@ Future<int> whileLoop(int value) {
       return __completer.future;
 
     } catch (__e, __s) {
-      __completer.completeException(__e, __s);
+      __completer.completeError(__e, __s);
       return __completer.future;
     }
   }
@@ -295,21 +287,17 @@ Future<int> recursivelySum(int value) {
 
       var sum;
       if (__prevBookmark == null) {
-        Future<int> __asyncCallFuture = recursivelySum(value - 1);
-
         __reEnterFunction() {
           __nextBookmark.locations.add("await1");
           Bookmark __copy = new Bookmark.from(__nextBookmark);
           _recursivelySum(__copy, value);
         }
 
-        __asyncCallFuture.then((__value) {
+        recursivelySum(value - 1).then((__value) {
           __nextBookmark.variables["sum"] = __value;
           __reEnterFunction();
-        });
-
-        __asyncCallFuture.handleException((__e) {
-          __nextBookmark.variables["__exceptionToThrow"] = __e;
+        }).catchError((__e) {
+          __nextBookmark.variables["__exceptionToThrow"] = __e.error;
           __reEnterFunction();
           return true;
         });
@@ -329,7 +317,7 @@ Future<int> recursivelySum(int value) {
       return __completer.future;
 
     } catch (__e, __s) {
-      __completer.completeException(__e, __s);
+      __completer.completeError(__e, __s);
       return __completer.future;
     }
   }
@@ -349,7 +337,7 @@ Future<int> recursivelySum(int value) {
  * }
  *
  * All three of these exceptions should be transformed into
- * [__completer.completeException].
+ * [__completer.completeError].
  **/
 Future throwInMultipleWays(int value) {
   Future _throwInMultipleWays(Bookmark __prevBookmark, value) {
@@ -383,25 +371,21 @@ Future throwInMultipleWays(int value) {
 
         var __ignored1;
         if (__prevBookmark == null) {
-
-          // Async throw for value 1
-          Future __asyncCallFuture = asyncThrow(new SomeException("Throw during <-"));
-
           __reEnterFunction() {
             __nextBookmark.locations.add("await1");
             Bookmark __copy = new Bookmark.from(__nextBookmark);
             _throwInMultipleWays(__copy, value);
           }
 
-          __asyncCallFuture.then((__value) {
+          // Async throw for value 1
+          asyncThrow(new SomeException("Throw during <-")).then((__value) {
             __nextBookmark.variables["__ignored1"] = __value;
             __reEnterFunction();
-          });
+          }).catchError((__e) {
 
-          // handleException for value 1 by re-entering the function
-          // and throwing it there.
-          __asyncCallFuture.handleException((__e) {
-            __nextBookmark.variables["__exceptionToThrow"] = __e;
+            // catchError for value 1 by re-entering the function
+            // and throwing it there.
+            __nextBookmark.variables["__exceptionToThrow"] = __e.error;
             __reEnterFunction();
             return true;
           });
@@ -428,7 +412,7 @@ Future throwInMultipleWays(int value) {
 
     // All 3 unhandled exceptions should propagate to here.
     } catch (__e, __s) {
-      __completer.completeException(__e, __s);
+      __completer.completeError(__e, __s);
       return __completer.future;
     }
   }
@@ -500,21 +484,17 @@ Future<List> nestedClosures(bool executeAwait) {
 
         var __ignored1;
         if (__prevBookmark == null) {
-          Future<int> __asyncCallFuture = wrapWithFuture(0);
-
           __reEnterFunction() {
             __nextBookmark.locations.add("await1");
             Bookmark __copy = new Bookmark.from(__nextBookmark);
             _nestedClosures(__copy, executeAwait);
           }
 
-          __asyncCallFuture.then((__value) {
+          wrapWithFuture(0).then((__value) {
             __nextBookmark.variables["__ignored1"] = __value;
             __reEnterFunction();
-          });
-
-          __asyncCallFuture.handleException((__e) {
-            __nextBookmark.variables["__exceptionToThrow"] = __e;
+          }).catchError((__e) {
+            __nextBookmark.variables["__exceptionToThrow"] = __e.error;
             __reEnterFunction();
             return true;
           });
@@ -575,7 +555,7 @@ Future<List> nestedClosures(bool executeAwait) {
       return __completer.future;
 
     } catch (__e, __s) {
-      __completer.completeException(__e, __s);
+      __completer.completeError(__e, __s);
       return __completer.future;
     }
   }
