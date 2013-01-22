@@ -111,6 +111,7 @@ Future<int> simpleStatement(int value) {
 
       if (__prevBookmark == null) {
         value++;
+        __nextBookmark.variables["value"] = value;
       }
       
       if (__prevBookmark == null) {
@@ -231,8 +232,14 @@ Future<int> whileLoop(int value) {
             if (__exceptionToThrow != null) throw __exceptionToThrow; 
           }
           
-          sum = __nextBookmark.variables["sum"] = sum + returnedValue;
-          value = __nextBookmark.variables["value"] = value - 1;        
+          if (__prevBookmark == null) {
+            sum += returnedValue;
+            __nextBookmark.variables["sum"] = sum;
+          }
+          if (__prevBookmark == null) {
+            value--;
+            __nextBookmark.variables["value"] = value;  
+          }
         }
         __nextBookmark.locations.remove("while1");
       }
