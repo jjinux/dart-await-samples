@@ -94,7 +94,7 @@ Future<int> wrapWithFuture(int value) {
  *     value <- incrementSlowly(value);
  *     return value;
  *   }
-*/
+ */
 Future<int> simpleStatement(int value) {
   const __valueRef = ":value";
 
@@ -345,7 +345,7 @@ Future<int> recursivelySum(int value) {
  *
  * All three of these exceptions should be transformed into
  * [__completer.completeError].
- **/
+ */
 Future throwInMultipleWays(int value) {
   const __valueRef = ":value";
 
