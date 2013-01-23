@@ -59,6 +59,7 @@ Future asyncThrow(Exception e) {
  *   }
  */
 Future<int> wrapWithFuture(int value) {
+  const __valueRef = ":value";
 
   Future<int> _wrapWithFuture(Bookmark __prevBookmark, int value) {
     Bookmark __nextBookmark = new Bookmark<int>();
@@ -69,7 +70,7 @@ Future<int> wrapWithFuture(int value) {
     }
     Completer<int> __completer = __nextBookmark.completer;
     if (__prevBookmark == null) {
-      __nextBookmark.variables["value"] = value;
+      __nextBookmark.variables[__valueRef] = value;
     }
     try {
 
@@ -95,6 +96,7 @@ Future<int> wrapWithFuture(int value) {
  *   }
 */
 Future<int> simpleStatement(int value) {
+  const __valueRef = ":value";
 
   Future<int> _simpleStatement(Bookmark __prevBookmark, int value) {
     Bookmark __nextBookmark = new Bookmark<int>();
@@ -105,13 +107,13 @@ Future<int> simpleStatement(int value) {
     }
     Completer<int> __completer = __nextBookmark.completer;
     if (__prevBookmark == null) {
-      __nextBookmark.variables["value"] = value;
+      __nextBookmark.variables[__valueRef] = value;
     }
     try {
 
       if (__prevBookmark == null) {
         value++;
-        __nextBookmark.variables["value"] = value;
+        __nextBookmark.variables[__valueRef] = value;
       }
 
       if (__prevBookmark == null) {
@@ -122,7 +124,7 @@ Future<int> simpleStatement(int value) {
         }
 
         asyncIncrement(value).then((__value) {
-          __nextBookmark.variables["value"] = __value;
+          __nextBookmark.variables[__valueRef] = __value;
           __reEnterFunction();
         }).catchError((__e) {
           __nextBookmark.variables["__exceptionToThrow"] = __e.error;
@@ -134,7 +136,7 @@ Future<int> simpleStatement(int value) {
       }
 
       if (__prevBookmark.locations.contains("await1")) {
-        value = __nextBookmark.variables["value"] = __prevBookmark.variables["value"];
+        value = __nextBookmark.variables[__valueRef] = __prevBookmark.variables[__valueRef];
         var __exceptionToThrow = __prevBookmark.variables["__exceptionToThrow"];
         __prevBookmark = null;
         if (__exceptionToThrow != null) throw __exceptionToThrow;
@@ -166,6 +168,7 @@ Future<int> simpleStatement(int value) {
  *   }
  */
 Future<int> whileLoop(int value) {
+  const __valueRef = ":value";
 
   Future<int> _whileLoop(Bookmark __prevBookmark, int value) {
     Bookmark __nextBookmark = new Bookmark<int>();
@@ -176,13 +179,14 @@ Future<int> whileLoop(int value) {
     }
     Completer<int> __completer = __nextBookmark.completer;
     if (__prevBookmark == null) {
-      __nextBookmark.variables["value"] = value;
+      __nextBookmark.variables[__valueRef] = value;
     }
     try {
 
       int sum;
+      const __sumRef = ":sum";
       if (__prevBookmark == null) {
-        sum = __nextBookmark.variables["sum"] = 0;
+        sum = __nextBookmark.variables[__sumRef] = 0;
       }
 
       if (__prevBookmark == null ||
@@ -196,6 +200,7 @@ Future<int> whileLoop(int value) {
 
 
           var returnedValue;
+          const __returnedValueRef = "while1:returnedValue";
           if (__prevBookmark == null) {
             __reEnterFunction() {
               __nextBookmark.locations.add("await1");
@@ -204,7 +209,7 @@ Future<int> whileLoop(int value) {
             }
 
             wrapWithFuture(value).then((__value) {
-              __nextBookmark.variables["returnedValue"] = __value;
+              __nextBookmark.variables[__returnedValueRef] = __value;
               __reEnterFunction();
             }).catchError((__e) {
               __nextBookmark.variables["__exceptionToThrow"] = __e.error;
@@ -216,21 +221,21 @@ Future<int> whileLoop(int value) {
           }
 
           if (__prevBookmark.locations.contains("await1")) {
-            returnedValue = __nextBookmark.variables["returnedValue"] = __prevBookmark.variables["returnedValue"];
+            returnedValue = __nextBookmark.variables[__returnedValueRef] = __prevBookmark.variables[__returnedValueRef];
             var __exceptionToThrow = __prevBookmark.variables["__exceptionToThrow"];
-            value = __nextBookmark.variables["value"] = __prevBookmark.variables["value"];
-            sum = __nextBookmark.variables["sum"] = __prevBookmark.variables["sum"];
+            value = __nextBookmark.variables[__valueRef] = __prevBookmark.variables[__valueRef];
+            sum = __nextBookmark.variables[__sumRef] = __prevBookmark.variables[__sumRef];
             __prevBookmark = null;
             if (__exceptionToThrow != null) throw __exceptionToThrow;
           }
 
           if (__prevBookmark == null) {
             sum += returnedValue;
-            __nextBookmark.variables["sum"] = sum;
+            __nextBookmark.variables[__sumRef] = sum;
           }
           if (__prevBookmark == null) {
             value--;
-            __nextBookmark.variables["value"] = value;
+            __nextBookmark.variables[__valueRef] = value;
           }
         }
         __nextBookmark.locations.remove("while1");
@@ -260,6 +265,7 @@ Future<int> whileLoop(int value) {
  *   }
  */
 Future<int> recursivelySum(int value) {
+  const __valueRef = ":value";
 
   Future<int> _recursivelySum(Bookmark __prevBookmark, int value) {
     Bookmark __nextBookmark = new Bookmark<int>();
@@ -270,7 +276,7 @@ Future<int> recursivelySum(int value) {
     }
     Completer<int> __completer = __nextBookmark.completer;
     if (__prevBookmark == null) {
-      __nextBookmark.variables["value"] = value;
+      __nextBookmark.variables[__valueRef] = value;
     }
     try {
 
@@ -286,6 +292,7 @@ Future<int> recursivelySum(int value) {
       }
 
       var sum;
+      const __sumRef = ":sum";
       if (__prevBookmark == null) {
         __reEnterFunction() {
           __nextBookmark.locations.add("await1");
@@ -294,7 +301,7 @@ Future<int> recursivelySum(int value) {
         }
 
         recursivelySum(value - 1).then((__value) {
-          __nextBookmark.variables["sum"] = __value;
+          __nextBookmark.variables[__sumRef] = __value;
           __reEnterFunction();
         }).catchError((__e) {
           __nextBookmark.variables["__exceptionToThrow"] = __e.error;
@@ -306,9 +313,9 @@ Future<int> recursivelySum(int value) {
       }
 
       if (__prevBookmark.locations.contains("await1")) {
-        sum = __nextBookmark.variables["sum"] = __prevBookmark.variables["sum"];
+        sum = __nextBookmark.variables[__sumRef] = __prevBookmark.variables[__sumRef];
         var __exceptionToThrow = __prevBookmark.variables["__exceptionToThrow"];
-        value = __nextBookmark.variables["value"] = __prevBookmark.variables["value"];
+        value = __nextBookmark.variables[__valueRef] = __prevBookmark.variables[__valueRef];
         __prevBookmark = null;
         if (__exceptionToThrow != null) throw __exceptionToThrow;
       }
@@ -340,6 +347,8 @@ Future<int> recursivelySum(int value) {
  * [__completer.completeError].
  **/
 Future throwInMultipleWays(int value) {
+  const __valueRef = ":value";
+
   Future _throwInMultipleWays(Bookmark __prevBookmark, value) {
     Bookmark __nextBookmark = new Bookmark<int>();
     if (__prevBookmark == null) {
@@ -349,7 +358,7 @@ Future throwInMultipleWays(int value) {
     }
     Completer<int> __completer = __nextBookmark.completer;
     if (__prevBookmark == null) {
-      __nextBookmark.variables["value"] = value;
+      __nextBookmark.variables[__valueRef] = value;
     }
     try {
 
@@ -370,6 +379,7 @@ Future throwInMultipleWays(int value) {
         __nextBookmark.locations.add("if1");
 
         var __ignored1;
+        const __ignored1Ref = "if1:__ignored1";
         if (__prevBookmark == null) {
           __reEnterFunction() {
             __nextBookmark.locations.add("await1");
@@ -379,7 +389,7 @@ Future throwInMultipleWays(int value) {
 
           // Async throw for value 1
           asyncThrow(new SomeException("Throw during <-")).then((__value) {
-            __nextBookmark.variables["__ignored1"] = __value;
+            __nextBookmark.variables[__ignored1Ref] = __value;
             __reEnterFunction();
           }).catchError((__e) {
 
@@ -394,9 +404,9 @@ Future throwInMultipleWays(int value) {
         }
 
         if (__prevBookmark.locations.contains("await1")) {
-          __ignored1 = __nextBookmark.variables["__ignored1"] = __prevBookmark.variables["__ignored1"];
+          __ignored1 = __nextBookmark.variables[__ignored1Ref] = __prevBookmark.variables[__ignored1Ref];
           var __exceptionToThrow = __prevBookmark.variables["__exceptionToThrow"];
-          value = __nextBookmark.variables["value"] = __prevBookmark.variables["value"];
+          value = __nextBookmark.variables[__valueRef] = __prevBookmark.variables[__valueRef];
           __prevBookmark = null;
           if (__exceptionToThrow != null) throw __exceptionToThrow;
         }
@@ -442,6 +452,7 @@ Future throwInMultipleWays(int value) {
  *   }
  */
 Future<List> nestedClosures(bool executeAwait) {
+  const __executeAwaitRef = ":executeAwait";
 
   Future<List> _nestedClosures(
       Bookmark __prevBookmark, bool executeAwait) {
@@ -453,28 +464,32 @@ Future<List> nestedClosures(bool executeAwait) {
     }
     Completer<List> __completer = __nextBookmark.completer;
     if (__prevBookmark == null) {
-      __nextBookmark.variables["executeAwait"] = executeAwait;
+      __nextBookmark.variables[__executeAwaitRef] = executeAwait;
     }
     try {
 
       var i;
+      const __iRef = ":i";
       if (__prevBookmark == null) {
-        i = __nextBookmark.variables["i"] = 0;
+        i = __nextBookmark.variables[__iRef] = 0;
       }
 
       var m;
+      const __mRef = ":m";
       if (__prevBookmark == null) {
-        m = __nextBookmark.variables["m"] = {};
+        m = __nextBookmark.variables[__mRef] = {};
       }
 
       var closureForI;
+      const __closureForIRef = ":closureForI";
       if (__prevBookmark == null) {
-        closureForI = __nextBookmark.variables["closureForI"] = () => i;
+        closureForI = __nextBookmark.variables[__closureForIRef] = () => i;
       }
 
       var closureForM;
+      const __closureForMRef = ":closureForM";
       if (__prevBookmark == null) {
-        closureForM = __nextBookmark.variables["closureForM"] = () => m;
+        closureForM = __nextBookmark.variables[__closureForMRef] = () => m;
       }
 
       if ((__prevBookmark == null && executeAwait) ||
@@ -483,6 +498,7 @@ Future<List> nestedClosures(bool executeAwait) {
         __nextBookmark.locations.add("if1");
 
         var __ignored1;
+        const __ignored1Ref = "if1:__ignored1";
         if (__prevBookmark == null) {
           __reEnterFunction() {
             __nextBookmark.locations.add("await1");
@@ -491,7 +507,7 @@ Future<List> nestedClosures(bool executeAwait) {
           }
 
           wrapWithFuture(0).then((__value) {
-            __nextBookmark.variables["__ignored1"] = __value;
+            __nextBookmark.variables[__ignored1Ref] = __value;
             __reEnterFunction();
           }).catchError((__e) {
             __nextBookmark.variables["__exceptionToThrow"] = __e.error;
@@ -503,12 +519,12 @@ Future<List> nestedClosures(bool executeAwait) {
         }
 
         if (__prevBookmark.locations.contains("await1")) {
-          executeAwait = __nextBookmark.variables["executeAwait"] = __prevBookmark.variables["executeAwait"];
-          i = __nextBookmark.variables["i"] = __prevBookmark.variables["i"];
-          m = __nextBookmark.variables["m"] = __prevBookmark.variables["m"];
-          closureForI = __nextBookmark.variables["closureForI"] = __prevBookmark.variables["closureForI"];
-          closureForM = __nextBookmark.variables["closureForM"] = __prevBookmark.variables["closureForM"];
-          __ignored1 = __nextBookmark.variables["__ignored1"] = __prevBookmark.variables["__ignored1"];
+          executeAwait = __nextBookmark.variables[__executeAwaitRef] = __prevBookmark.variables[__executeAwaitRef];
+          i = __nextBookmark.variables[__iRef] = __prevBookmark.variables[__iRef];
+          m = __nextBookmark.variables[__mRef] = __prevBookmark.variables[__mRef];
+          closureForI = __nextBookmark.variables[__closureForIRef] = __prevBookmark.variables[__closureForIRef];
+          closureForM = __nextBookmark.variables[__closureForMRef] = __prevBookmark.variables[__closureForMRef];
+          __ignored1 = __nextBookmark.variables[__ignored1Ref] = __prevBookmark.variables[__ignored1Ref];
           var __exceptionToThrow = __prevBookmark.variables["__exceptionToThrow"];
           __prevBookmark = null;
 
@@ -533,7 +549,7 @@ Future<List> nestedClosures(bool executeAwait) {
       }
 
       if (__prevBookmark == null) {
-        i = __nextBookmark.variables["i"] = 2;
+        i = __nextBookmark.variables[__iRef] = 2;
       }
 
       if (__prevBookmark == null) {
@@ -541,13 +557,15 @@ Future<List> nestedClosures(bool executeAwait) {
       }
 
       var closureForI2;
+      const __closureForI2Ref = ":closureForI2";
       if (__prevBookmark == null) {
-        closureForI2 = __nextBookmark.variables["closureForI2"] = () => i;
+        closureForI2 = __nextBookmark.variables[__closureForI2Ref] = () => i;
       }
 
       var closureForM2;
+      const __closureForM2Ref = ":closureForM2";
       if (__prevBookmark == null) {
-        closureForM2 = __nextBookmark.variables["closureForM2"] = () => m;
+        closureForM2 = __nextBookmark.variables[__closureForM2Ref] = () => m;
       }
 
       __completer.complete([closureForI(), closureForI2(),
